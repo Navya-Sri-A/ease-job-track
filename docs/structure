@@ -26,7 +26,8 @@
 │   ├── search_routes.py        # Its for search functionality
 │   ├── status_routes.py        # Its for updating job status
 │   ├── notes_routes.py         # Its for managing notes
-│   └── feedback.py             
+│   └── feedback.py             # Feedback option enabled once done with interview
+|
 ├── services/                   
 │   ├── __init__.py             # Initializes the services package
 │   ├── db_service.py           # Database functions 
