@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block content %}
+<h2>Add New Job</h2>
+<form method="POST">
+  <label>Company Name:</label>
+  <input type="text" name="company_name" required />
+  <label>Job Title:</label>
+  <input type="text" name="job_title" required />
+  <label>Application Status:</label>
+  <select name="application_status">
+    <option>Applied</option>
+    <option>Interview Scheduled</option>
+    <option>Rejected</option>
+    <option>Offer Received</option>
+  </select>
+</form>
+{% endblock %}
