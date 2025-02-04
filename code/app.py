@@ -14,6 +14,7 @@ def init_db():
             company_name TEXT NOT NULL,
             job_title TEXT NOT NULL,
             application_status TEXT NOT NULL,
+            applied_date TEXT,
             interview_date TEXT,
             reminder_date TEXT
         )
@@ -34,5 +35,22 @@ def index():
 # Add new job
 @app.route('/add', methods=['GET', 'POST'])
 def add_job():
+    if request.method == 'POST':
+        company_name = request.form['company_name']
+        job_title = request.form['job_title']
+        application_status = request.form['application_status']
+        applied_date = request.form['applied_date']
+        interview_date = request.form['interview_date']
+        reminder_date = request.form['reminder_date']
 
+        conn = sqlite3.connect('job_tracker.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date)
+            VALUES (?, ?, ?, ?,?, ?)
+        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('index'))
     return render_template('add_job.html')
