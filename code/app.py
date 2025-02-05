@@ -54,3 +54,7 @@ def add_job():
 
         return redirect(url_for('index'))
     return render_template('add_job.html')
+
+if __name__ == '__main__':
+    init_db()
+    app.run(debug=True)
