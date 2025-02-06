@@ -55,6 +55,17 @@ def add_job():
         return redirect(url_for('index'))
     return render_template('add_job.html')
 
+# Delete a job
+@app.route('/delete/<int:job_id>')
+def delete_job(job_id):
+    conn = sqlite3.connect('job_tracker.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM jobs WHERE id = ?", (job_id,))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
