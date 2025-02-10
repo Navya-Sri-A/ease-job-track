@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
+from calendar_integration import add_interview_to_calendar  
+
 
 app = Flask(__name__)
 
@@ -52,6 +54,10 @@ def add_job():
         conn.commit()
         conn.close()
 
+        if interview_date:
+            calendar_event = add_interview_to_calendar(company_name, job_title, interview_date)
+            print(calendar_event)  # Log event creation
+
         return redirect(url_for('index'))
     return render_template('add_job.html')
 
@@ -65,6 +71,7 @@ def delete_job(job_id):
     conn.close()
 
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     init_db()
