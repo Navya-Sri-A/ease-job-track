@@ -56,11 +56,11 @@ def add_job():
     return render_template('add_job.html')
 
 # Delete a job
-@app.route('/delete/<int:job_id>')
-def delete_job(job_id):
+@app.route('/delete/<int:id>')
+def delete_job(id):
     conn = sqlite3.connect('job_tracker.db')
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM jobs WHERE id = ?", (job_id,))
+    cursor.execute("DELETE FROM jobs WHERE id = ?", (id,))
     conn.commit()
     conn.close()
 
