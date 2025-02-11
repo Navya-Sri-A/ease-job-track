@@ -55,6 +55,35 @@ def add_job():
         return redirect(url_for('index'))
     return render_template('add_job.html')
 
+# Edit job details
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_job(id):
+    conn = sqlite3.connect('job_tracker.db')
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        company_name = request.form['company_name']
+        job_title = request.form['job_title']
+        application_status = request.form['application_status']
+        applied_date = request.form['applied_date']
+        interview_date = request.form['interview_date']
+        reminder_date = request.form['reminder_date']
+
+        cursor.execute('''
+            UPDATE jobs
+            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?
+            WHERE id = ?
+        ''', (company_name, job_title, application_status, applied_date, interview_date, reminder_date, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+
+    cursor.execute("SELECT * FROM jobs WHERE id = ?", (id,))
+    job = cursor.fetchone()
+    conn.close()
+
+    return render_template('edit_job.html', job=job)
+    
 # Delete a job
 @app.route('/delete/<int:id>')
 def delete_job(id):
