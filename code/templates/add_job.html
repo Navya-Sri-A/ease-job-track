@@ -15,9 +15,11 @@
   <label>Applied Date:</label>
   <input type="date" name="applied_date" />
   <label>Interview Date:</label>
-  <input type="date" name="interview_date" />
+  <input type="datetime-local" name="interview_date" />
   <label>Reminder Date:</label>
   <input type="date" name="reminder_date" />
   <button type="submit">Add Job</button>
 </form>
+<p>Note: If an interview date is added, an event will be created in Google Calendar.</p>
+
 {% endblock %}
