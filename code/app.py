@@ -54,9 +54,10 @@ def add_job():
         conn.commit()
         conn.close()
 
+        # To add the interview to your google calendar
         if interview_date:
             calendar_event = add_interview_to_calendar(company_name, job_title, interview_date)
-            print(calendar_event)  # Log event creation
+            print(calendar_event) 
 
         return redirect(url_for('index'))
     return render_template('add_job.html')
@@ -100,7 +101,6 @@ def delete_job(id):
     conn.close()
 
     return redirect(url_for('index'))
-
 
 if __name__ == '__main__':
     init_db()
