@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+<h2>Edit Job Application</h2>
+<form method="POST">
+  <label>Company Name:</label>
+  <input type="text" name="company_name" value="{{ job[1] }}" required />
+
+  <label>Job Title:</label>
+  <input type="text" name="job_title" value="{{ job[2] }}" required />
+
+  <select name="application_status">
+    <option>Applied</option>
+    <option>Interview Scheduled</option>
+    <option>Rejected</option>
+    <option>Offer Received</option>
+  </select>
+
+  <label>Applied Date:</label>
+  <input type="date" name="applied_date" value="{{ job[4] or '' }}" />
+
+  <label>Interview Date:</label>
+  <input type="date" name="interview_date" value="{{ job[5] or '' }}" />
+
+  <label>Reminder Date:</label>
+  <input type="date" name="reminder_date" value="{{ job[6] or '' }}" />
+
+  <button type="submit">Update Job</button>
+</form>
+{% endblock %}
