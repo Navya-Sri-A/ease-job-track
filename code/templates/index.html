@@ -21,7 +21,7 @@
       <td>{{ job[4] or 'N/A' }}</td>
       <td>{{ job[5] or 'N/A' }}</td>
       <td>
-        <a href="{{ url_for('delete_job', job_id=job[0]) }}">Delete</a>
+        <a href="{{ url_for('delete_job', id=job[0]) }}">Delete</a>
       </td>
     </tr>
     {% endfor %}
