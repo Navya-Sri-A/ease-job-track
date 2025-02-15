@@ -16,7 +16,7 @@
 |   11  | New Features            | Due Mar 11 by 11:59pm    | Not yet started |                            | 
 |   12  | Project Demo            | Final Project demo       | Not yet started |                            |      
 |   13  | 360 Evaluation          | Due Mar 11 by 11:59pm    | Not yet started |                            |          
-|   14  | Individual Contribution | No due date              | Not yet started |                            | 
-|   15  | Sprint Planning /Stories| No due date              | Not yet started |                            | 
+|   14  | Individual Contribution | No due date              |   In Progress   |                            | 
+|   15  | Sprint Planning /Stories| All time                 |   In Progress   |                            |
 
 
