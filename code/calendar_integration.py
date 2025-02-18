@@ -4,6 +4,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+import pytz 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
@@ -32,18 +33,23 @@ def get_calendar_service():
 def add_interview_to_calendar(company_name, job_title, interview_date):
     service = get_calendar_service()
 
+    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Pacific Time Zone
+    tz = pytz.timezone(PACIFIC_TIMEZONE)
+
     # Convert interview_date to ISO format
     interview_start = datetime.strptime(interview_date, "%Y-%m-%dT%H:%M")
     interview_end = interview_start + timedelta(hours=1)  # 1-hour interview
 
+    interview_start_pacific = tz.localize(interview_start)
+    interview_end_pacific = tz.localize(interview_end)
     event = {
         "summary": f"Interview: {job_title} at {company_name}",
         "start": {
-            "dateTime": interview_start.strftime("%Y-%m-%dT%H:%M:%S"),
+            "dateTime": interview_start_pacific.astimezone(pytz.utc).isoformat(),
             "timeZone": "UTC",
         },
         "end": {
-            "dateTime": interview_end.strftime("%Y-%m-%dT%H:%M:%S"),
+            "dateTime": interview_end_pacific.astimezone(pytz.utc).isoformat(),
             "timeZone": "UTC",
         },
     }
@@ -60,26 +66,31 @@ def add_interview_to_calendar(company_name, job_title, interview_date):
 def add_reminder_to_calendar(company_name, job_title, reminder_date):
     service = get_calendar_service()
 
-    # Handle date format with or without time
+    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Pacific Time Zone
+    tz = pytz.timezone(PACIFIC_TIMEZONE)
+
     try:
-        # If reminder_date includes time (correct format)
         reminder_start = datetime.strptime(reminder_date, "%Y-%m-%dT%H:%M")
     except ValueError:
-        # If reminder_date only has date, set time to 9:00 AM
         reminder_start = datetime.strptime(reminder_date, "%Y-%m-%d")
-        reminder_start = reminder_start.replace(hour=9, minute=0)  # Default time
+        reminder_start = reminder_start.replace(hour=9, minute=0)
 
-    reminder_end = reminder_start + timedelta(hours=1)  # 1-hour reminder
+    reminder_end = reminder_start + timedelta(hours=1)
+
+    # Convert to Pacific Time and then to UTC for Google Calendar
+    reminder_start_pacific = tz.localize(reminder_start)
+    reminder_end_pacific = tz.localize(reminder_end)
+
 
     event = {
         "summary": f"Reminder: Follow-up for {job_title} at {company_name}",
         "start": {
-            "dateTime": reminder_start.strftime("%Y-%m-%dT%H:%M:%S"),
-            "timeZone": "UTC",
+            "dateTime": reminder_start_pacific.astimezone(pytz.utc).isoformat(), # UTC for Google
+            "timeZone": "UTC", # Important: Timezone must be UTC
         },
         "end": {
-            "dateTime": reminder_end.strftime("%Y-%m-%dT%H:%M:%S"),
-            "timeZone": "UTC",
+            "dateTime": reminder_end_pacific.astimezone(pytz.utc).isoformat(), # UTC for Google
+            "timeZone": "UTC", # Important: Timezone must be UTC
         },
     }
 
