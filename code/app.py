@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
-from calendar_integration import add_interview_to_calendar  
+from calendar_integration import add_interview_to_calendar, add_reminder_to_calendar 
 
 
 app = Flask(__name__)
@@ -54,10 +54,12 @@ def add_job():
         conn.commit()
         conn.close()
 
-        # To add the interview to your google calendar
-        if interview_date:
-            calendar_event = add_interview_to_calendar(company_name, job_title, interview_date)
-            print(calendar_event) 
+        if interview_date :
+            add_interview_to_calendar(company_name, job_title, interview_date)
+
+        if reminder_date :
+            add_reminder_to_calendar(company_name, job_title, reminder_date)
+    
 
         return redirect(url_for('index'))
     return render_template('add_job.html')
