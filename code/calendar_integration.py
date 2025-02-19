@@ -33,7 +33,7 @@ def get_calendar_service():
 def add_interview_to_calendar(company_name, job_title, interview_date):
     service = get_calendar_service()
 
-    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Pacific Time Zone
+    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Setting Pacific Time Zone
     tz = pytz.timezone(PACIFIC_TIMEZONE)
 
     # Convert interview_date to ISO format
@@ -56,8 +56,10 @@ def add_interview_to_calendar(company_name, job_title, interview_date):
 
     try:
         event_result = service.events().insert(calendarId="primary", body=event).execute()
+        event_id = event_result.get("id")
+
         print(f"Event created: {event_result.get('htmlLink')}")
-        return event_result
+        return event_id 
     except Exception as e:
         print("Error creating event:", e)
         return None
@@ -66,7 +68,7 @@ def add_interview_to_calendar(company_name, job_title, interview_date):
 def add_reminder_to_calendar(company_name, job_title, reminder_date):
     service = get_calendar_service()
 
-    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Pacific Time Zone
+    PACIFIC_TIMEZONE = "America/Los_Angeles"  # Setting Pacific Time Zone
     tz = pytz.timezone(PACIFIC_TIMEZONE)
 
     try:
@@ -86,19 +88,31 @@ def add_reminder_to_calendar(company_name, job_title, reminder_date):
         "summary": f"Reminder: Follow-up for {job_title} at {company_name}",
         "start": {
             "dateTime": reminder_start_pacific.astimezone(pytz.utc).isoformat(), # UTC for Google
-            "timeZone": "UTC", # Important: Timezone must be UTC
+            "timeZone": "UTC", 
         },
         "end": {
             "dateTime": reminder_end_pacific.astimezone(pytz.utc).isoformat(), # UTC for Google
-            "timeZone": "UTC", # Important: Timezone must be UTC
+            "timeZone": "UTC", 
         },
     }
 
     try:
         event_result = service.events().insert(calendarId="primary", body=event).execute()
+        event_id = event_result.get("id")
         print(f"Reminder created: {event_result.get('htmlLink')}")
-        return event_result
+        
+        return event_id 
     except Exception as e:
         print("Error creating reminder event:", e)
         return None
 
+def delete_event_from_calendar(event_id):
+    service = get_calendar_service()
+    try:
+        if event_id: 
+            service.events().delete(calendarId="primary", eventId=event_id).execute()
+            print(f"Deleted event {event_id} from Google Calendar")
+        else:
+            print("No event ID provided for deletion.")
+    except Exception as e:
+        print("Error deleting event:", e)
