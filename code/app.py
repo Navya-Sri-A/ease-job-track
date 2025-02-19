@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
-from calendar_integration import add_interview_to_calendar, add_reminder_to_calendar 
+from calendar_integration import add_interview_to_calendar, add_reminder_to_calendar, delete_event_from_calendar 
 
 
 app = Flask(__name__)
@@ -18,7 +18,9 @@ def init_db():
             application_status TEXT NOT NULL,
             applied_date TEXT,
             interview_date TEXT,
-            reminder_date TEXT
+            reminder_date TEXT,
+            event_id_interview TEXT,  
+            event_id_reminder TEXT   
         )
     ''')
     conn.commit()
@@ -45,22 +47,27 @@ def add_job():
         interview_date = request.form['interview_date']
         reminder_date = request.form['reminder_date']
 
+        event_id_interview = None
+        event_id_reminder = None
+
+        if interview_date:
+            event_id_interview = add_interview_to_calendar(company_name, job_title, interview_date)
+
+        # Add reminder event to Google Calendar
+        if reminder_date:
+            event_id_reminder = add_reminder_to_calendar(company_name, job_title, reminder_date)
+
+
         conn = sqlite3.connect('job_tracker.db')
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date)
-            VALUES (?, ?, ?, ?,?, ?)
-        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date))
+            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date, event_id_interview, event_id_reminder)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date, event_id_interview, event_id_reminder))
         conn.commit()
         conn.close()
 
-        if interview_date :
-            add_interview_to_calendar(company_name, job_title, interview_date)
-
-        if reminder_date :
-            add_reminder_to_calendar(company_name, job_title, reminder_date)
-    
-
+        
         return redirect(url_for('index'))
     return render_template('add_job.html')
 
@@ -98,6 +105,20 @@ def edit_job(id):
 def delete_job(id):
     conn = sqlite3.connect('job_tracker.db')
     cursor = conn.cursor()
+
+    cursor.execute("SELECT event_id_interview, event_id_reminder FROM jobs WHERE id = ?", (id,))
+    event_ids = cursor.fetchone()
+
+    if event_ids:
+        event_id_interview, event_id_reminder = event_ids
+
+        # Delete events from Google Calendar
+        if event_id_interview:
+            delete_event_from_calendar(event_id_interview)
+        if event_id_reminder:
+            delete_event_from_calendar(event_id_reminder)
+
+    # Delete the job from the database
     cursor.execute("DELETE FROM jobs WHERE id = ?", (id,))
     conn.commit()
     conn.close()
