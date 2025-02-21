@@ -30,7 +30,7 @@ def get_calendar_service():
 
     return build("calendar", "v3", credentials=creds)
 
-def add_interview_to_calendar(company_name, job_title, interview_date):
+def add_interview_to_calendar(company_name, job_title, interview_date):  #It adds the Interview date to the google calendar
     service = get_calendar_service()
 
     PACIFIC_TIMEZONE = "America/Los_Angeles"  # Setting Pacific Time Zone
@@ -65,7 +65,7 @@ def add_interview_to_calendar(company_name, job_title, interview_date):
         return None
     
 
-def add_reminder_to_calendar(company_name, job_title, reminder_date):
+def add_reminder_to_calendar(company_name, job_title, reminder_date): # Adds Reminder to the Google calendar
     service = get_calendar_service()
 
     PACIFIC_TIMEZONE = "America/Los_Angeles"  # Setting Pacific Time Zone
@@ -106,7 +106,7 @@ def add_reminder_to_calendar(company_name, job_title, reminder_date):
         print("Error creating reminder event:", e)
         return None
 
-def delete_event_from_calendar(event_id):
+def delete_event_from_calendar(event_id): # When a particular job is deleted from the list it deletes the event from the calendar
     service = get_calendar_service()
     try:
         if event_id: 
