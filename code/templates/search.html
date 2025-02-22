@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- Search Form -->
+<form
+  method="GET"
+  action="{{ url_for('search_jobs') }}"
+  class="search-form"
+  id="searchForm"
+>
+  <!-- Search by Company, Job Title, or Status -->
+  <input
+    type="text"
+    name="search_query"
+    placeholder="Search by company, job title, status..."
+    value="{{ request.args.get('search_query', '') }}"
+  />
+
+  <!-- Serach by Applied Date  -->
+  <label for="applied_date">Applied Date:</label>
+  <input
+    type="date"
+    name="applied_date"
+    id="applied_date"
+    value="{{ request.args.get('applied_date', '') }}"
+  />
+
+  <!-- Search by Interview Date -->
+  <label for="interview_date">Interview Date:</label>
+  <input
+    type="date"
+    name="interview_date"
+    id="interview_date"
+    value="{{ request.args.get('interview_date', '') }}"
+  />
+
+  <div class="form-buttons">
+    <button type="submit">Search</button>
+    <button type="button" onclick="clearSearch()">Clear</button>
+  </div>
+</form>
+
+{% if jobs %}
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Job Title</th>
+      <th>Status</th>
+      <th>Applied Date</th>
+      <th>Interview Date</th>
+      <th>Reminder</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job in jobs %}
+    <tr>
+      <td>{{ job[1] }}</td>
+      <td>{{ job[2] }}</td>
+      <td>{{ job[3] }}</td>
+      <td>{{ job[4] }}</td>
+      <td>{{ job[5] or 'N/A' }}</td>
+      <td>{{ job[6] or 'N/A' }}</td>
+      <td>
+        <a href="{{ url_for('edit_job', id=job[0]) }}">Edit</a>
+        <a href="{{ url_for('delete_job', id=job[0]) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No jobs found matching your search criteria.</p>
+{% endif %}
+
+<script>
+  function clearSearch() {
+    // Reset the form fields
+    document.getElementById("searchForm").reset();
+    window.location.href = "{{ url_for('search_jobs') }}";
+  }
+</script>
+{% endblock %}
