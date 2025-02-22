@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Application Tracker</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
   <body>
     <header>
@@ -15,7 +12,6 @@
       <nav>
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('add_job') }}">Add Job</a>
-        <a href="{{ url_for('search_jobs') }}">Search</a>
       </nav>
     </header>
     <main>{% block content %}{% endblock %}</main>
