@@ -1,5 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<h2>All Job Applications</h2>
+<style>
+  .centered-text {
+    text-align: center;
+  }
+</style>
+<div class="centered-text"><h2>The Great Application Quest</h2></div>
 <table>
   <thead>
     <tr>
@@ -22,7 +27,7 @@
       <td>{{ job[5] or 'N/A' }}</td>
       <td>{{ job[6] or 'N/A' }}</td>
       <td>
-        <a href="{{ url_for('edit_job', id=job[0]) }}">Edit</a> 
+        <a href="{{ url_for('edit_job', id=job[0]) }}">Edit</a>
         <a href="{{ url_for('delete_job', id=job[0]) }}">Delete</a>
       </td>
     </tr>

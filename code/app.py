@@ -36,6 +36,41 @@ def index():
     conn.close()
     return render_template('index.html', jobs=jobs)
 
+# To search for application by company name, job title, status, interview and reminder date
+@app.route('/search', methods=['GET'])
+def search_jobs():
+    conn = sqlite3.connect('job_tracker.db')
+    cursor = conn.cursor()
+
+    # Get search parameters from the request
+    search_query = request.args.get('search_query', '')
+    applied_date = request.args.get('applied_date', '')
+    interview_date = request.args.get('interview_date', '')
+
+    # Base query to fetch all jobs
+    query = "SELECT * FROM jobs WHERE 1=1"
+    params = []
+
+    # Add search filters if provided
+    if search_query:
+        query += " AND (company_name LIKE ? OR job_title LIKE ? OR application_status LIKE ?)"
+        params.extend([f"%{search_query}%", f"%{search_query}%", f"%{search_query}%"])
+
+    if applied_date:
+        query += " AND applied_date = ?"
+        params.append(applied_date)
+
+    if interview_date:
+        query += " AND interview_date = ?"
+        params.append(interview_date)
+
+    cursor.execute(query, params)
+    jobs = cursor.fetchall()
+    conn.close()
+
+    # Render the search template with the job data
+    return render_template('search.html', jobs=jobs)
+
 # Add new job
 @app.route('/add', methods=['GET', 'POST'])
 def add_job():
