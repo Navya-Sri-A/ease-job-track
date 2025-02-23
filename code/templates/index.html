@@ -4,6 +4,19 @@
     text-align: center;
   }
 </style>
+
+<!-- Pop-up Box for Pie Chart -->
+<div id="popupBox" class="popup">
+  <div class="popup-content">
+    <span class="close-button">&times;</span>
+    <div class="centered-text">
+      <b><h3>Application Status Breakdown</h3></b>
+    </div>
+    <canvas id="statusChart" width="400" height="400"></canvas>
+  </div>
+</div>
+
+<!-- Job Applications Table -->
 <div class="centered-text"><h2>The Great Application Quest</h2></div>
 <table>
   <thead>
@@ -34,4 +47,70 @@
     {% endfor %}
   </tbody>
 </table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // Pie Chart Data
+  const statusLabels = {{ status_labels | tojson | safe }};
+  const statusCounts = {{ status_counts | tojson | safe }};
+
+  // Map statuses to colors
+  const statusColorMap = {
+    Applied: "#FFCE56", // Yellow
+    "Interview Scheduled": "#36A2EB", // Blue
+    Rejected: "#FF6384", // Red
+    "Offer Received": "#4BC0C0", // Teal
+  };
+
+  // Generate backgroundColor array dynamically
+  const backgroundColor = statusLabels.map((label) => statusColorMap[label]);
+
+  // Create the Pie Chart
+  const ctx = document.getElementById("statusChart").getContext("2d");
+  const statusChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: statusLabels,
+      datasets: [
+        {
+          data: statusCounts,
+          backgroundColor: backgroundColor,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+        },
+      },
+    },
+  });
+
+  const popupBox = document.getElementById("popupBox");
+  const visualizeButton = document.getElementById("visualizeButton");
+  const closeButton = document.querySelector(".close-button");
+
+  // Show the pop-up box when the "Visualize" button is clicked
+  visualizeButton.addEventListener("click", () => {
+    popupBox.style.display = "block";
+  });
+
+  // Hide the pop-up box when the close button is clicked
+  closeButton.addEventListener("click", () => {
+    popupBox.style.display = "none";
+  });
+
+  // Hide the pop-up box when clicking outside of it
+  window.addEventListener("click", (event) => {
+    if (event.target === popupBox) {
+      popupBox.style.display = "none";
+    }
+  });
+</script>
 {% endblock %}
