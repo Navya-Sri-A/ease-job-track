@@ -31,11 +31,22 @@ def init_db():
 def index():
     conn = sqlite3.connect('job_tracker.db')
     cursor = conn.cursor()
+
     cursor.execute("SELECT * FROM jobs")
     jobs = cursor.fetchall()
-    conn.close()
-    return render_template('index.html', jobs=jobs)
 
+    # Fetch data for the pie chart 
+    cursor.execute("SELECT application_status, COUNT(*) FROM jobs GROUP BY application_status")
+    status_data = cursor.fetchall()
+
+    conn.close()
+
+    #Prepare data for the pie chart
+    labels = [row[0] for row in status_data]  # Status labels (e.g., Applied, Interview Scheduled)
+    counts = [row[1] for row in status_data]  # Count of applications for each status
+
+    return render_template('index.html', jobs=jobs, status_labels=labels, status_counts=counts)
+    
 # To search for application by company name, job title, status, interview and reminder date
 @app.route('/search', methods=['GET'])
 def search_jobs():
