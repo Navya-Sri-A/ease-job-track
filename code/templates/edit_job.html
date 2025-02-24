@@ -19,10 +19,10 @@
   <input type="date" name="applied_date" value="{{ job[4] or '' }}" />
 
   <label>Interview Date:</label>
-  <input type="date" name="interview_date" value="{{ job[5] or '' }}" />
+  <input type="datetime-local" name="interview_date" value="{{ job[5] or '' }}" />
 
   <label>Reminder Date:</label>
-  <input type="date" name="reminder_date" value="{{ job[6] or '' }}" />
+  <input type="datetime-local" name="reminder_date" value="{{ job[6] or '' }}" />
 
   <button type="submit">Update Job</button>
 </form>
