@@ -7,7 +7,7 @@
   <label>Job Title:</label>
   <input type="text" name="job_title" value="{{ job[2] }}" required />
 
-  <label>Status</label>
+  <label>Job Status</label>
   <select name="application_status">
     <option>Applied</option>
     <option>Interview Scheduled</option>
@@ -24,6 +24,9 @@
   <label>Reminder Date:</label>
   <input type="datetime-local" name="reminder_date" value="{{ job[6] or '' }}" />
 
+  <label>Comments:</label>
+  <input type="text" name="comments_section" value="{{ job[7] or '' }}" />
+  
   <button type="submit">Update Job</button>
 </form>
 {% endblock %}

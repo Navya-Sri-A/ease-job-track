@@ -49,6 +49,7 @@
       <th>Applied Date</th>
       <th>Interview Date</th>
       <th>Reminder</th>
+      <th>Comments</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -61,6 +62,7 @@
       <td>{{ job[4] }}</td>
       <td>{{ job[5] or 'N/A' }}</td>
       <td>{{ job[6] or 'N/A' }}</td>
+      <td>{{ job[7] or 'N/A' }}</td>
       <td>
         <a href="{{ url_for('edit_job', id=job[0]) }}">Edit</a>
         <a href="{{ url_for('delete_job', id=job[0]) }}">Delete</a>
