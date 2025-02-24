@@ -9,8 +9,8 @@
         <ul>
             {% for item in feedback %}
                 <li><b>Status:</b> {{ item[2] }}<br></li>
-                <li><b>Feedback:</b> {{ item[1] }}<br></li>
-                <li><b>language:</b> {{ item[0] }}<br></li>
+                <li><b>Feedback:</b> {{ item[0] }}<br></li>
+                <li><b>language:</b> {{ item[1] }}<br></li>
             {% endfor %}
         </ul>
     {% else %}
