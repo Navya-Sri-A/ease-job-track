@@ -39,13 +39,21 @@ def index():
     cursor.execute("SELECT application_status, COUNT(*) FROM jobs GROUP BY application_status")
     status_data = cursor.fetchall()
 
+    # Fetch data for the bar chart (applications per company)
+    cursor.execute("SELECT company_name, COUNT(*) FROM jobs GROUP BY company_name")
+    company_data = cursor.fetchall()
+
     conn.close()
 
     #Prepare data for the pie chart
     labels = [row[0] for row in status_data]  # Status labels (e.g., Applied, Interview Scheduled)
     counts = [row[1] for row in status_data]  # Count of applications for each status
 
-    return render_template('index.html', jobs=jobs, status_labels=labels, status_counts=counts)
+    # Prepare data for the bar chart
+    company_names = [row[0] for row in company_data]  # Company names
+    company_counts = [row[1] for row in company_data]  # Count of applications per company
+
+    return render_template('index.html', jobs=jobs, status_labels=labels, status_counts=counts, company_names=company_names, company_counts=company_counts)
     
 # To search for application by company name, job title, status, interview and reminder date
 @app.route('/search', methods=['GET'])

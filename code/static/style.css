@@ -183,6 +183,10 @@ form button:hover {
   background-color: #5a6268;
 }
 
+.centered-text {
+  text-align: center;
+}
+
 .popup {
   display: none;
   position: fixed;
@@ -191,30 +195,27 @@ form button:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
 
 .popup-content {
   background-color: white;
-  margin: 10% auto;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 5px;
   width: 50%;
   max-width: 500px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .close-button {
-  float: right;
-  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
+  font-size: 20px;
 }
 
-.close-button:hover {
-  color: #ff0000;
-}
-
-/* Visualize Button Styles */
 #visualizeButton {
   background-color: #4caf50;
   color: white;
@@ -232,4 +233,30 @@ form button:hover {
 
 #visualizeButton i {
   margin-right: 8px;
+}
+
+.tab {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tab button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.tab button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.chart-container {
+  display: none;
+}
+
+.chart-container.active {
+  display: block;
 }
