@@ -19,6 +19,7 @@ def init_db():
             applied_date TEXT,
             interview_date TEXT,
             reminder_date TEXT,
+            comments_section TEXT,
             event_id_interview TEXT,  
             event_id_reminder TEXT   
         )
@@ -100,6 +101,7 @@ def add_job():
         applied_date = request.form['applied_date']
         interview_date = request.form['interview_date']
         reminder_date = request.form['reminder_date']
+        comments_section = request.form['comments_section']
 
         event_id_interview = None
         event_id_reminder = None
@@ -115,9 +117,9 @@ def add_job():
         conn = sqlite3.connect('job_tracker.db')
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date, event_id_interview, event_id_reminder)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date, event_id_interview, event_id_reminder))
+            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date, comments_section, event_id_interview, event_id_reminder)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date, comments_section, event_id_interview, event_id_reminder))
         conn.commit()
         conn.close()
 
@@ -138,6 +140,7 @@ def edit_job(id):
         applied_date = request.form['applied_date']
         new_interview_date = request.form['interview_date']
         new_reminder_date = request.form['reminder_date']
+        comments_section = request.form['comments_section']
 
         # Fetch existing event IDs
         cursor.execute("SELECT event_id_interview, event_id_reminder FROM jobs WHERE id = ?", (id,))
@@ -166,9 +169,9 @@ def edit_job(id):
         # Update the job in the database
         cursor.execute('''
             UPDATE jobs
-            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, event_id_interview = ?, event_id_reminder = ?
+            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, comments_section = ?, event_id_interview = ?, event_id_reminder = ?
             WHERE id = ?
-        ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, event_id_interview, event_id_reminder, id))
+        ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, comments_section, event_id_interview, event_id_reminder, id))
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
