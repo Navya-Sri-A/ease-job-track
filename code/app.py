@@ -136,14 +136,39 @@ def edit_job(id):
         job_title = request.form['job_title']
         application_status = request.form['application_status']
         applied_date = request.form['applied_date']
-        interview_date = request.form['interview_date']
-        reminder_date = request.form['reminder_date']
+        new_interview_date = request.form['interview_date']
+        new_reminder_date = request.form['reminder_date']
 
+        # Fetch existing event IDs
+        cursor.execute("SELECT event_id_interview, event_id_reminder FROM jobs WHERE id = ?", (id,))
+        event_ids = cursor.fetchone()
+        event_id_interview, event_id_reminder = event_ids if event_ids else (None, None)
+
+        # Delete old events if dates are changed
+        if new_interview_date:
+            if event_id_interview:
+                delete_event_from_calendar(event_id_interview)
+            event_id_interview = add_interview_to_calendar(company_name, job_title, new_interview_date)
+        else:
+            if event_id_interview:
+                delete_event_from_calendar(event_id_interview)
+            event_id_interview = None
+
+        if new_reminder_date:
+            if event_id_reminder:
+                delete_event_from_calendar(event_id_reminder)
+            event_id_reminder = add_reminder_to_calendar(company_name, job_title, new_reminder_date)
+        else:
+            if event_id_reminder:
+                delete_event_from_calendar(event_id_reminder)
+            event_id_reminder = None
+
+        # Update the job in the database
         cursor.execute('''
             UPDATE jobs
-            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?
+            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, event_id_interview = ?, event_id_reminder = ?
             WHERE id = ?
-        ''', (company_name, job_title, application_status, applied_date, interview_date, reminder_date, id))
+        ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, event_id_interview, event_id_reminder, id))
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
