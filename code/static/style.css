@@ -236,67 +236,85 @@ td a:hover {
 }
 
 /* Search Form */
+/* Search Form Styling */
 .search-form {
-  margin: 1.5rem 0 2.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  max-width: 100%;
+  margin-bottom: 20px;
+  max-width: 600px;
 }
 
-.search-form input[type="text"],
-.search-form input[type="date"] {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: var(--border-radius);
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"] {
   width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.search-form label {
-  font-weight: 500;
-  color: var(--gray);
-  margin-bottom: 0.5rem;
-}
-
-.form-buttons {
+.form-actions {
   display: flex;
-  gap: 1rem;
-  grid-column: 1 / -1;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.form-buttons button {
-  padding: 0.8rem 1.5rem;
+.btn-search,
+.btn-clear {
+  padding: 8px 16px;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
-  transition: var(--transition);
 }
 
-.form-buttons button[type="submit"] {
+.btn-search {
   background-color: var(--primary);
   color: white;
 }
 
-.form-buttons button[type="submit"]:hover {
-  background-color: var(--primary-dark);
+.btn-search:hover {
+  background-color: var(--primary);
 }
 
-.form-buttons button[type="button"] {
-  background-color: var(--gray);
+.btn-clear {
+  background-color: #6c757d;
   color: white;
 }
 
-.form-buttons button[type="button"]:hover {
+.btn-clear:hover {
   background-color: #5a6268;
 }
 
+/* Search Results Table Styling */
+.search-results {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.search-results th,
+.search-results td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-results th {
+  background-color: var(--primary);
+  font-weight: bold;
+  
+}
+
+.search-results tr:hover {
+  background-color: #f1f1f1;
+}
 /* Popup & Visualization */
 .centered-text {
   text-align: center;
