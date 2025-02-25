@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feedback for {{ job[1] }} at {{ job[0] }}</title>
+</head>
+<body>
+    <h2>Feedback for {{ job[1] }} at {{ job[0] }}</h2>
+    {% if feedback %}
+        <ul>
+            {% for item in feedback %}
+                <li><b>Status:</b> {{ item[2] }}<br></li>
+                <li><b>Feedback:</b> {{ item[0] }}<br></li>
+                <li><b>language:</b> {{ item[1] }}<br></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No feedback available for this job.</p>
+    {% endif %}
+
+    <a href="/">Back to Home Page</a>
+</body>
+</html>

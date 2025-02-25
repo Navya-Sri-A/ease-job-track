@@ -3,7 +3,6 @@ import sqlite3
 from datetime import datetime
 from calendar_integration import add_interview_to_calendar, add_reminder_to_calendar, delete_event_from_calendar 
 
-
 app = Flask(__name__)
 
 # Database initialization
@@ -22,6 +21,16 @@ def init_db():
             comments_section TEXT,
             event_id_interview TEXT,  
             event_id_reminder TEXT   
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER,
+            feedback_text TEXT NOT NULL,
+            status TEXT NOT NULL,
+            language TEXT NOT NULL,
+            FOREIGN KEY (job_id) REFERENCES jobs (id)
         )
     ''')
     conn.commit()
@@ -113,7 +122,6 @@ def add_job():
         if reminder_date:
             event_id_reminder = add_reminder_to_calendar(company_name, job_title, reminder_date)
 
-
         conn = sqlite3.connect('job_tracker.db')
         cursor = conn.cursor()
         cursor.execute('''
@@ -123,7 +131,6 @@ def add_job():
         conn.commit()
         conn.close()
 
-        
         return redirect(url_for('index'))
     return render_template('add_job.html')
 
@@ -172,6 +179,18 @@ def edit_job(id):
             SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, comments_section = ?, event_id_interview = ?, event_id_reminder = ?
             WHERE id = ?
         ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, comments_section, event_id_interview, event_id_reminder, id))
+
+        # Check if the job status is changed to "Rejected" or "Offer Received"
+        status = request.form.get('status')
+        feedback_text = request.form.get('feedback')
+        language = request.form.get('language')
+
+        if status and feedback_text:
+            cursor.execute('''
+                INSERT INTO feedback (job_id, feedback_text, status, language)
+                VALUES (?, ?, ?, ?)
+            ''', (id, feedback_text, status, language))
+
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
@@ -206,6 +225,24 @@ def delete_job(id):
     conn.close()
 
     return redirect(url_for('index'))
+
+# Feedback Form
+@app.route('/feedback/<int:job_id>')
+def feedback(job_id):
+    conn = sqlite3.connect('job_tracker.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT feedback_text, language, status FROM feedback WHERE job_id = ?
+    ''', (job_id,))
+    feedback = cursor.fetchall()
+
+    cursor.execute("SELECT company_name, job_title FROM jobs WHERE id = ?", (job_id,))
+    job = cursor.fetchone()
+
+    conn.close()
+
+    return render_template('feedback.html', feedback=feedback, job=job)
 
 if __name__ == '__main__':
     init_db()
