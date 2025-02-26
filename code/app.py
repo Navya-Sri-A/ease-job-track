@@ -90,8 +90,9 @@ def search_jobs():
         params.append(applied_date)
 
     if interview_date:
-        query += " AND interview_date = ?"
-        params.append(interview_date)
+        interview_date_only = interview_date.split('T')[0]
+        query += " AND DATE(interview_date) = ?"
+        params.append(interview_date_only)
 
     cursor.execute(query, params)
     jobs = cursor.fetchall()
