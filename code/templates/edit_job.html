@@ -9,10 +9,10 @@
 
   <label>Job Status</label>
   <select name="application_status">
-    <option>Applied</option>
-    <option>Interview Scheduled</option>
-    <option>Rejected</option>
-    <option>Offer Received</option>
+      <option value="Applied" {% if job[3] == "Applied" %}selected{% endif %}>Applied</option>
+      <option value="Interview Scheduled" {% if job[3] == "Interview Scheduled" %}selected{% endif %}>Interview Scheduled</option>
+      <option value="Rejected" {% if job[3] == "Rejected" %}selected{% endif %}>Rejected</option>
+      <option value="Offer Received" {% if job[3] == "Offer Received" %}selected{% endif %}>Offer Received</option>
   </select>
 
   <label>Applied Date:</label>
