@@ -259,36 +259,30 @@ td a:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.btn-search,
-.btn-clear {
-  padding: 8px 16px;
+.form-buttons button {
+  padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
-.btn-search {
+.form-buttons button[type="submit"] {
   background-color: var(--primary);
   color: white;
 }
 
-.btn-search:hover {
-  background-color: var(--primary);
+.form-buttons button[type="submit"]:hover {
+  background-color: var(--primary-dark);
 }
 
-.btn-clear {
-  background-color: #6c757d;
+.form-buttons button[type="button"] {
+  background-color: var(--gray);
   color: white;
 }
 
-.btn-clear:hover {
+.form-buttons button[type="button"]:hover {
   background-color: #5a6268;
 }
 
