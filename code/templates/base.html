@@ -26,9 +26,15 @@
         <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
         <a href="{{ url_for('add_job') }}"><i class="fas fa-plus-circle"></i> Add Job</a>
         <a href="{{ url_for('search_jobs') }}"><i class="fas fa-search"></i> Search</a>
-        <button id="visualizeButton">
-          <i class="fas fa-chart-pie"></i> Visualize
+        <button id="dark-mode-toggle">
+          <i class="fas fa-moon"></i> Dark Mode
         </button>
+        <button id="notification-button">
+          <i class="fas fa-bell"></i> Notifications
+        </button>
+        <div id="notifications-list" class="notifications-list">
+          <!-- Notifications will be dynamically added here -->
+        </div>
       </nav>
     </header>
     <main>{% block content %}{% endblock %}</main>
