@@ -359,6 +359,16 @@ td a:hover {
   color: var(--danger);
 }
 
+/* Centered Text Container */
+.centered-text {
+  display: flex;
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Horizontally center items */
+  gap: 1rem; /* Space between heading and button */
+  margin-bottom: 1.5rem; /* Space below the container */
+}
+
+/* Visualize Button */
 #visualizeButton {
   background-color: var(--secondary);
   color: white;
@@ -564,4 +574,82 @@ body.dark-mode .form-buttons button {
 
 body.dark-mode .form-buttons button:hover {
   background-color: #444; /* Dark hover effect */
+}
+/* Dark Mode Toggle Button */
+#dark-mode-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Notifications Dropdown */
+.notifications-dropdown {
+  position: relative; /* Important for positioning the dropdown */
+}
+
+#notification-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#notification-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.notifications-list {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.notifications-list.show {
+  display: block;
+}
+
+.notification-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  color: var(--dark);
+  display: flex; /*Use flexbox to allign the dismiss button*/
+  justify-content: space-between; /*Push the dismiss button to the right*/
+  align-items: center;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dismiss-button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: grey;
 }
