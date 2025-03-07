@@ -4,15 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Application Tracker</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link 
-      rel="stylesheet" 
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Apply dark mode preference globally as soon as the page starts loading
+      (function() {
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        console.log('Base HTML immediate check: Dark mode preference:', isDarkMode);
+        if (isDarkMode) {
+          document.body.classList.add('dark-mode');
+          console.log('Base HTML: Dark mode class added to body');
+        }
+      })();
+    </script>
   </head>
   <body>
     <header>

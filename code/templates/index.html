@@ -1,4 +1,10 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
+
+<!-- Dark Mode Toggle Button -->
+<button id="dark-mode-toggle" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+  <i class="fas fa-moon"></i> Dark Mode
+</button>
 
 <!-- passing data from Flask to JavaScript -->
 <script id="statusLabels" type="application/json">
