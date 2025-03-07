@@ -1,4 +1,85 @@
 document.addEventListener('DOMContentLoaded', function () {
+  const notificationsList = document.getElementById('notifications-list');
+  const notificationButton = document.getElementById('notification-button');
+  let jobsData = []; // Store job data for better management
+
+  // Function to add a notification to the dropdown list
+  function addNotification(message, jobId) {
+        const notificationItem = document.createElement('div');
+        notificationItem.className = 'notification-item';
+        notificationItem.innerHTML = `<span>${message}</span><button class="dismiss-button" data-job-id="${jobId}">×</button>`;
+
+        // Insert the new notification at the beginning of the list
+        notificationsList.insertBefore(notificationItem, notificationsList.firstChild);
+
+        notificationsList.classList.add('show');
+
+        notificationItem.querySelector('.dismiss-button').addEventListener('click', function () {
+            const jobIdToRemove = this.getAttribute('data-job-id');
+            notificationItem.remove();
+        });
+    }
+
+  // Function to load job data from the table
+  function loadJobsData() {
+      jobsData = [];
+      const jobs = document.querySelectorAll('table tbody tr');
+      jobs.forEach((job, index) => {
+          const companyName = job.querySelector('td:nth-child(1)').textContent;
+          const jobTitle = job.querySelector('td:nth-child(2)').textContent;
+          const interviewDateCell = job.querySelector('td:nth-child(5)');
+          let interviewDate = null;
+
+          if (interviewDateCell && interviewDateCell.textContent !== 'N/A') {
+              interviewDate = new Date(interviewDateCell.textContent);
+          }
+
+          jobsData.push({
+              id: index, // Assign a unique ID to each job
+              companyName: companyName,
+              jobTitle: jobTitle,
+              interviewDate: interviewDate,
+          });
+      });
+  }
+
+  // Function to check interview dates
+  function checkInterviewDates() {
+      const today = new Date();
+      loadJobsData(); // Reload data each time.
+      jobsData.forEach((job) => {
+          if (job.interviewDate) {
+              const timeDifference = job.interviewDate - today;
+              const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+              if (daysDifference === 1) {
+                  const notificationMessage = `Interview Alert: ${job.jobTitle} at ${job.companyName} is comingUp!`;
+                  addNotification(notificationMessage, job.id);
+              }
+          }
+      });
+  }
+
+  // Check interview dates when the page loads
+  checkInterviewDates();
+
+  // Check interview dates periodically (e.g., every hour)
+  setInterval(checkInterviewDates, 60 * 60 * 1000); // Check every hour
+
+  // Toggle notifications dropdown
+  notificationButton.addEventListener('click', function () {
+      notificationsList.classList.toggle('show');
+  });
+
+  // Close notifications dropdown when clicking outside
+  document.addEventListener('click', function (event) {
+      if (!notificationButton.contains(event.target) && !notificationsList.contains(event.target)) {
+          notificationsList.classList.remove('show');
+      }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('dark-mode-toggle');
   const body = document.body;
 
