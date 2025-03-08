@@ -1,10 +1,7 @@
 {% extends "base.html" %} 
 {% block content %}
 
-<!-- Dark Mode Toggle Button -->
-<button id="dark-mode-toggle" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
-  <i class="fas fa-moon"></i> Dark Mode
-</button>
+
 
 <!-- passing data from Flask to JavaScript -->
 <script id="statusLabels" type="application/json">
@@ -46,8 +43,14 @@
   </div>
 </div>
 
+
 <!-- Job Applications Table -->
-<div class="centered-text"><h2>The Great Application Quest</h2></div>
+<div class="centered-text">
+  <h2>The Great Application Quest</h2>
+  <button id="visualizeButton">
+    <i class="fas fa-chart-pie"></i> Visualize
+  </button>
+</div>
 <table>
   <thead>
     <tr>
