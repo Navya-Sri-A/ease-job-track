@@ -16,7 +16,7 @@
 
 /* General Styles */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   line-height: 1.6;
@@ -29,7 +29,6 @@ body {
 
 main {
   flex: 1;
-  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -225,7 +224,8 @@ td a[href*="delete"] {
   color: white;
 }
 
-td a[href*="feedback"], td a[href*="notes"] {
+td a[href*="feedback"],
+td a[href*="notes"] {
   background-color: var(--primary);
   color: white;
 }
@@ -236,7 +236,6 @@ td a:hover {
 }
 
 /* Search Form */
-/* Search Form Styling */
 .search-form {
   margin-bottom: 20px;
   max-width: 600px;
@@ -259,6 +258,7 @@ td a:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .form-buttons button {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -303,19 +303,20 @@ td a:hover {
 .search-results th {
   background-color: var(--primary);
   font-weight: bold;
-  
 }
 
 .search-results tr:hover {
   background-color: #f1f1f1;
 }
+
 /* Popup & Visualization */
 .centered-text {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.centered-text h2, .centered-text h3 {
+.centered-text h2,
+.centered-text h3 {
   color: var(--primary);
   font-weight: 600;
 }
@@ -362,10 +363,10 @@ td a:hover {
 /* Centered Text Container */
 .centered-text {
   display: flex;
-  align-items: center; /* Vertically center items */
-  justify-content: center; /* Horizontally center items */
-  gap: 1rem; /* Space between heading and button */
-  margin-bottom: 1.5rem; /* Space below the container */
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Visualize Button */
@@ -429,38 +430,95 @@ td a:hover {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Header adjustments */
   header {
     flex-direction: column;
     text-align: center;
     padding: 1rem;
   }
-  
+
   header h1 {
     margin-bottom: 1rem;
   }
-  
+
   header nav {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0.5rem;
   }
-  
-  main {
-    padding: 1rem;
+
+  header nav a {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
-  
+
+  /* Table adjustments */
   table {
     display: block;
     overflow-x: auto;
+    white-space: nowrap;
   }
-  
+
+  table th,
+  table td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  /* Form adjustments */
   form {
+    padding: 1rem;
     width: 100%;
-    padding: 1.5rem;
   }
-  
+
+  form input,
+  form select,
+  form textarea,
+  form button {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  /* Popup adjustments */
   .popup-content {
     width: 95%;
-    padding: 1.5rem;
+    padding: 1rem;
+  }
+
+  .tab button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .chart-container {
+    min-height: 300px;
+  }
+
+  /* Centered text adjustments */
+  .centered-text {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #visualizeButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Search form adjustments */
+  .search-form {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .search-form input[type="text"],
+  .search-form input[type="date"] {
+    padding: 0.5rem;
+  }
+
+  .form-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -575,6 +633,7 @@ body.dark-mode .form-buttons button {
 body.dark-mode .form-buttons button:hover {
   background-color: #444; /* Dark hover effect */
 }
+
 /* Dark Mode Toggle Button */
 #dark-mode-toggle {
   background: none;
@@ -646,7 +705,7 @@ body.dark-mode .form-buttons button:hover {
   background-color: #f8f9fa;
 }
 
-.dismiss-button{
+.dismiss-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
