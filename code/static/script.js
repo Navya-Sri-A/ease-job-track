@@ -80,6 +80,24 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    const statusSelect = document.getElementById('application_status');
+    const feedbackForm = document.getElementById('feedbackFormData');
+    const feedbackStatusSelect = document.getElementById('status');
+    
+  // Checks the status of application to be one of the Offer Received or Rejected, before the feedback form is populated
+    function toggleFeedbackOption() {
+      if (statusSelect.value === 'Rejected' || statusSelect.value === 'Offer Received') {
+        feedbackForm.style.display = 'block';
+        feedbackStatusSelect.value = statusSelect.value;
+      } else {
+        feedbackForm.style.display = 'none';
+      }
+    }
+    toggleFeedbackOption();
+    statusSelect.addEventListener('change', toggleFeedbackOption);
+  });
+
+document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('dark-mode-toggle');
   const body = document.body;
 
