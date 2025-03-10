@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 from datetime import datetime
 from calendar_integration import add_interview_to_calendar, add_reminder_to_calendar, delete_event_from_calendar 
@@ -19,6 +19,7 @@ def init_db():
             interview_date TEXT,
             reminder_date TEXT,
             comments_section TEXT,
+            priority INTEGER,
             event_id_interview TEXT,  
             event_id_reminder TEXT   
         )
@@ -42,7 +43,7 @@ def index():
     conn = sqlite3.connect('job_tracker.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM jobs")
+    cursor.execute("SELECT * FROM jobs") 
     jobs = cursor.fetchall()
 
     # Fetch data for the pie chart 
@@ -112,7 +113,8 @@ def add_job():
         interview_date = request.form['interview_date']
         reminder_date = request.form['reminder_date']
         comments_section = request.form['comments_section']
-
+        priority = int(request.form.get('priority'))
+                                        
         event_id_interview = None
         event_id_reminder = None
 
@@ -126,9 +128,9 @@ def add_job():
         conn = sqlite3.connect('job_tracker.db')
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date, comments_section, event_id_interview, event_id_reminder)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date, comments_section, event_id_interview, event_id_reminder))
+            INSERT INTO jobs (company_name, job_title, application_status, applied_date, interview_date, reminder_date, comments_section, priority, event_id_interview, event_id_reminder)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (company_name, job_title, application_status,applied_date, interview_date, reminder_date, comments_section, priority, event_id_interview, event_id_reminder))
         conn.commit()
         conn.close()
 
@@ -149,6 +151,7 @@ def edit_job(id):
         new_interview_date = request.form['interview_date']
         new_reminder_date = request.form['reminder_date']
         comments_section = request.form['comments_section']
+        new_priority = request.form.get('priority')
 
         # Fetch existing event IDs
         cursor.execute("SELECT event_id_interview, event_id_reminder FROM jobs WHERE id = ?", (id,))
@@ -177,9 +180,9 @@ def edit_job(id):
         # Update the job in the database
         cursor.execute('''
             UPDATE jobs
-            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, comments_section = ?, event_id_interview = ?, event_id_reminder = ?
+            SET company_name = ?, job_title = ?, application_status = ?, applied_date = ?, interview_date = ?, reminder_date = ?, comments_section = ?, priority = ?, event_id_interview = ?, event_id_reminder = ?
             WHERE id = ?
-        ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, comments_section, event_id_interview, event_id_reminder, id))
+        ''', (company_name, job_title, application_status, applied_date, new_interview_date, new_reminder_date, comments_section, new_priority, event_id_interview, event_id_reminder, id))
 
         # Check if the job status is changed to "Rejected" or "Offer Received"
         status = request.form.get('status')
@@ -226,6 +229,16 @@ def delete_job(id):
     conn.close()
 
     return redirect(url_for('index'))
+
+# Priority listing
+@app.route('/sort_jobs')
+def sort_jobs():
+    conn = sqlite3.connect('job_tracker.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM jobs ORDER BY priority DESC")
+    sorted_list = cursor.fetchall()
+    conn.close()
+    return jsonify(sorted_list)
 
 # Feedback Form
 @app.route('/feedback/<int:job_id>')
