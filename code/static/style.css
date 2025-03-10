@@ -235,6 +235,13 @@ td a:hover {
   transform: translateY(-2px);
 }
 
+.sort-list {
+  position: right;
+  top: 50%;
+  margin-left: 5px;
+  transform: translateY(-50%); 
+}
+
 /* Search Form */
 .search-form {
   margin-bottom: 20px;
