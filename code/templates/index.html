@@ -54,6 +54,11 @@
 <table>
   <thead>
     <tr>
+      <th>
+      <button id="sortPriority" class="sort-header">
+          Priority <span class="sort-list"><i class="fas fa-sort"></i></span>
+      </button>
+      </th>
       <th>Company</th>
       <th>Job Title</th>
       <th>Job Status</th>
@@ -65,9 +70,20 @@
       <th>Feedback</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="jobTable">
     {% for job in jobs %}
     <tr>
+      <td>
+        {% if job[8] == 3 %}
+            ★★★
+        {% elif job[8] == 2 %}
+            ★★
+        {% elif job[8] == 1 %}
+            ★
+        {% else %}
+            Error
+        {% endif %}
+      </td>
       <td>{{ job[1] }}</td>
       <td>{{ job[2] }}</td>
       <td>{{ job[3] }}</td>
@@ -90,4 +106,45 @@
 </table>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+  document.getElementById('sortPriority').addEventListener('click', function() {
+      fetch('/sort_jobs')
+          .then(response => response.json())
+          .then(data => {
+              const tableBody = document.getElementById('jobTable');
+              tableBody.innerHTML = ''; // Clear the table
+
+              data.forEach(job => {
+                  const row = document.createElement('tr');
+                  let priorityList = '';
+                  if (job[8] === 3) {
+                      priorityList = '★★★';
+                  } else if (job[8] === 2) {
+                      priorityList = '★★';
+                  } else if (job[8] === 1) {
+                      priorityList = '★';
+                  } else {
+                      priorityList = 'Error';
+                  }
+
+                  row.innerHTML = `
+                      <td>${priorityList}</td>
+                      <td>${job[1]}</td>
+                      <td>${job[2]}</td>
+                      <td>${job[3]}</td>
+                      <td>${job[4]}</td>
+                      <td>${job[5] || 'N/A'}</td>
+                      <td>${job[6] || 'N/A'}</td>
+                      <td>${job[7] || 'N/A'}</td>
+                      <td>
+                        <a href="/edit/${job[0]}">Edit</a> 
+                        <a href="/delete/${job[0]}">Delete</a>
+                      </td>
+                      <td>${job[3] === "Rejected" || job[3] === "Offer Received" ? `<a href="/feedback/${job[0]}">Notes</a>` : ''}</td>
+                  `;
+                  tableBody.appendChild(row);
+              });
+          });
+  });
+</script>
 {% endblock %}
