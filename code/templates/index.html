@@ -74,11 +74,11 @@
     {% for job in jobs %}
     <tr>
       <td>
-        {% if job[8] == 1 %}
+        {% if job[8] == 3 %}
             ★★★
         {% elif job[8] == 2 %}
             ★★
-        {% elif job[8] == 3 %}
+        {% elif job[8] == 1 %}
             ★
         {% else %}
             Error
@@ -117,11 +117,11 @@
               data.forEach(job => {
                   const row = document.createElement('tr');
                   let priorityList = '';
-                  if (job[8] === 1) {
+                  if (job[8] === 3) {
                       priorityList = '★★★';
                   } else if (job[8] === 2) {
                       priorityList = '★★';
-                  } else if (job[8] === 3) {
+                  } else if (job[8] === 1) {
                       priorityList = '★';
                   } else {
                       priorityList = 'Error';
