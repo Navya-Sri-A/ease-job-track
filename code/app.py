@@ -235,7 +235,7 @@ def delete_job(id):
 def sort_jobs():
     conn = sqlite3.connect('job_tracker.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM jobs ORDER BY priority")
+    cursor.execute("SELECT * FROM jobs ORDER BY priority DESC")
     sorted_list = cursor.fetchall()
     conn.close()
     return jsonify(sorted_list)
