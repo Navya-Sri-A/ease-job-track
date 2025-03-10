@@ -8,7 +8,7 @@
   <input type="text" name="job_title" value="{{ job[2] }}" required />
 
   <label>Job Status</label>
-  <select name="application_status">
+  <select name="application_status" id="application_status">
       <option value="Applied" {% if job[3] == "Applied" %}selected{% endif %}>Applied</option>
       <option value="Interview Scheduled" {% if job[3] == "Interview Scheduled" %}selected{% endif %}>Interview Scheduled</option>
       <option value="Rejected" {% if job[3] == "Rejected" %}selected{% endif %}>Rejected</option>
@@ -27,28 +27,33 @@
   <label>Comments:</label>
   <input type="text" name="comments_section" value="{{ job[7] or '' }}" />
 
-    {% if job[3] == "Rejected" or job[3] == "Offer Received" %}
-            <h2>Provide Feedback</h2>
-            <label>Status:</label>
-            <select name="status">
-                <option value="Rejected" {% if job[3] == "Rejected" %}selected{% endif %}>Rejected</option>
-                <option value="Offer Received" {% if job[3] == "Offer Received" %}selected{% endif %}>Offer Received</option>
-            </select><br>
+  <div id="feedbackFormData" style="display: none;">
+    <h2>Provide Feedback</h2>
+    <label>Status:</label>
+    <select name="status" id="feedback_status">
+        <option>Rejected</option>
+        <option>Offer Received</option>
+    </select><br>
 
-            <label>Feedback:</label>
-            <textarea name="feedback"></textarea><br>
+    <label>Feedback:</label>
+    <textarea name="feedback"></textarea><br>
 
-            <label>Language to improve:</label>
-            <select name="language">
-                <option>HTML</option>
-                <option>Java</option>
-                <option>Node</option>
-                <option>React</option>
-                <option>kotlin</option>
-                <option>Java Script</option>
-            </select>   
-    {% endif %}
-        <input type="submit" value="Save Changes">
-        <a href="/feedback/{{ job[0] }}">Feedback</a>
+    <label>Programming Language in discussion:</label>
+    <select name="language">
+        <option>HTML</option>
+        <option>Rust</option>
+        <option>Python</option>
+        <option>Java</option>
+        <option>Node</option>
+        <option>React</option>
+        <option>Go</option>
+        <option>kotlin</option>
+        <option>SQL</option>
+        <option>Java Script</option>
+    </select>   
+  </div>
+
+  <input type="submit" value="Save Changes">
+  <a href="/feedback/{{ job[0] }}">Feedback</a>
 </form>
 {% endblock %}
