@@ -1,7 +1,4 @@
-{% extends "base.html" %} 
-{% block content %}
-
-
+{% extends "base.html" %} {% block content %}
 
 <!-- passing data from Flask to JavaScript -->
 <script id="statusLabels" type="application/json">
@@ -43,7 +40,6 @@
   </div>
 </div>
 
-
 <!-- Job Applications Table -->
 <div class="centered-text">
   <h2>The Great Application Quest</h2>
@@ -55,9 +51,9 @@
   <thead>
     <tr>
       <th>
-      <button id="sortPriority" class="sort-header">
+        <button id="sortPriority" class="sort-header">
           Priority <span class="sort-list"><i class="fas fa-sort"></i></span>
-      </button>
+        </button>
       </th>
       <th>Company</th>
       <th>Job Title</th>
@@ -74,15 +70,8 @@
     {% for job in jobs %}
     <tr>
       <td>
-        {% if job[8] == 3 %}
-            ★★★
-        {% elif job[8] == 2 %}
-            ★★
-        {% elif job[8] == 1 %}
-            ★
-        {% else %}
-            Error
-        {% endif %}
+        {% if job[8] == 3 %} ★★★ {% elif job[8] == 2 %} ★★ {% elif job[8] == 1
+        %} ★ {% else %} Error {% endif %}
       </td>
       <td>{{ job[1] }}</td>
       <td>{{ job[2] }}</td>
