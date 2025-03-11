@@ -97,6 +97,46 @@ document.addEventListener('DOMContentLoaded', function () {
     statusSelect.addEventListener('change', toggleFeedbackOption);
   });
 
+  document.getElementById('sortPriority').addEventListener('click', function() {
+    fetch('/sort_jobs')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('jobTable');
+            tableBody.innerHTML = ''; // Clear the table
+
+            data.forEach(job => {
+                const row = document.createElement('tr');
+                let priorityList = '';
+                if (job[8] === 3) {
+                    priorityList = '★★★';
+                } else if (job[8] === 2) {
+                    priorityList = '★★';
+                } else if (job[8] === 1) {
+                    priorityList = '★';
+                } else {
+                    priorityList = 'Error';
+                }
+
+                row.innerHTML = `
+                    <td>${priorityList}</td>
+                    <td>${job[1]}</td>
+                    <td>${job[2]}</td>
+                    <td>${job[3]}</td>
+                    <td>${job[4]}</td>
+                    <td>${job[5] || 'N/A'}</td>
+                    <td>${job[6] || 'N/A'}</td>
+                    <td>${job[7] || 'N/A'}</td>
+                    <td>
+                      <a href="/edit/${job[0]}">Edit</a> 
+                      <a href="/delete/${job[0]}">Delete</a>
+                    </td>
+                    <td>${job[3] === "Rejected" || job[3] === "Offer Received" ? `<a href="/feedback/${job[0]}">Notes</a>` : ''}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('dark-mode-toggle');
   const body = document.body;
